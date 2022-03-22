@@ -2,9 +2,9 @@ const express = require("express");
 const router = express.Router();
 const pool = require("../config/db.js");
 
-router.get("/jokes", async (req, res) => {
-  const TABLE = "jokes";
+const TABLE = "jokes";
 
+router.get(`/${TABLE}`, async (req, res) => {
   pool.getConnection((err, conn) => {
     if (err) throw err;
 
@@ -21,3 +21,24 @@ router.get("/jokes", async (req, res) => {
     }
   });
 });
+
+router.post(`/${TABLE}`, async (req, res) => {
+  const id = req.body.id;
+  const value = req.body.value;
+
+  pool.getConnection((err, conn) => {
+    if (err) throw err;
+
+    const qry = `INSERT INTO ${TABLE}(id, value, date) VALUES(?,?,NOW())`;
+    conn.query(qry, [id, value], (err, result) => {
+      conn.release();
+      if (err) throw err;
+      console.log("Joke added!", result);
+    });
+
+    res.redirect("/jokes");
+    res.end();
+  });
+});
+
+module.exports = router;
