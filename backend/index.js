@@ -1,8 +1,12 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const routesHandler = require("./routes/handler.js");
+const cors = require("cors");
 
 const app = express();
+
+// For cors errors
+app.use(cors());
 
 // For JSON parsing
 app.use(bodyParser.urlencoded({ extended: false }));
