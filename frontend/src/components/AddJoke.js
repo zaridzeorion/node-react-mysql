@@ -24,20 +24,23 @@ const Jokes = ({ server_url }) => {
   const handleSubmit = async () => {
     POST(server_url, options).then((res) => {
       if (res.ok) {
-        setStatus("Joke already added! Reloading...");
+        setStatus("Joke already added!");
       }
     });
 
+    setStatus("Joke added! Reloading...");
+
     setTimeout(() => {
-      setStatus("Joke added! Reloading...");
       window.location.reload();
-    }, 1000);
+    }, 800);
   };
 
   return (
     <>
       {status} <br />
-      <input type="submit" onClick={() => handleSubmit()} value="Add Joke" />
+      <button className="addJokeButton" onClick={() => handleSubmit()}>
+        Add Joke
+      </button>
     </>
   );
 };
