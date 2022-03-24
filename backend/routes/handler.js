@@ -29,15 +29,24 @@ router.post(`/${TABLE}`, async (req, res) => {
   pool.getConnection((err, conn) => {
     if (err) throw err;
 
-    const qry = `INSERT INTO ${TABLE}(id, value, date) VALUES(?,?,NOW())`;
-    conn.query(qry, [id, value], (err, result) => {
-      conn.release();
-      if (err) throw err;
-      console.log("Joke added!", result);
-    });
-
-    res.redirect("/jokes");
-    res.end();
+    conn.query(
+      `SELECT value FROM ${TABLE} WHERE value="${value}"`,
+      (err, result, field) => {
+        if (result && result.length === 0) {
+          const qry = `INSERT INTO ${TABLE}(id, value, date) VALUES(?,?,NOW())`;
+          conn.query(qry, [id, value], (err, result) => {
+            conn.release();
+            if (err) throw err;
+            console.log("Joke added!");
+          });
+        } else {
+          conn.release();
+          console.log("Joke already added!");
+          res.write("Joke already added!");
+          res.end();
+        }
+      }
+    );
   });
 });
 
