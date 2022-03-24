@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { GET, POST } from "../fetch";
 
 const Jokes = ({ server_url }) => {
+  const [status, setStatus] = useState("");
   const [joke, setJoke] = useState("");
 
   // Retreive joke
@@ -20,9 +21,25 @@ const Jokes = ({ server_url }) => {
     body: JSON.stringify(joke),
   };
 
-  const handleSubmit = async () => POST(server_url, options);
+  const handleSubmit = async () => {
+    POST(server_url, options).then((res) => {
+      if (res.ok) {
+        setStatus("Joke already added! Reloading...");
+      }
+    });
 
-  return <input type="submit" onClick={() => handleSubmit()} value="Add Joke" />;
+    setTimeout(() => {
+      setStatus("Joke added! Reloading...");
+      window.location.reload();
+    }, 1000);
+  };
+
+  return (
+    <>
+      {status} <br />
+      <input type="submit" onClick={() => handleSubmit()} value="Add Joke" />
+    </>
+  );
 };
 
 export default Jokes;

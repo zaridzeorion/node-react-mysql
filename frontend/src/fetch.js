@@ -13,6 +13,7 @@ export async function POST(url, options) {
   try {
     let response = await fetch(url, options);
     if (!response.ok) throw new Error(response.statusText);
+    return response;
   } catch (error) {
     console.log(error);
   }
