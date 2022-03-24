@@ -51,5 +51,23 @@ ul {
 }
 
 .Joke .Value {
-  max-width: 40%;
+  width: 65%;
+}
+
+.RemoveJoke::before {
+  content: "Remove ";
+}
+
+.RemoveJoke {
+  cursor: pointer;
+  color: rgb(223, 0, 0);
+}
+
+.Removed {
+  text-decoration-line: line-through;
+  opacity: 0.3;
+}
+
+.Removed > .RemoveJoke::before {
+  content: "Recover ";
 }
