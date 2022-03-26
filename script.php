@@ -32,10 +32,9 @@ try
     $conn->exec('USE ' . $dbname);
 
     $sql = "CREATE TABLE $dbtable (
-      id INT PRIMARY KEY,
-      user_id INT,
-      title VARCHAR(255),
-      body VARCHAR(255)
+      id VARCHAR(50),
+      value VARCHAR(300),
+      date DATETIME
     )";
 
     $conn->exec($sql);
